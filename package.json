@@ -1,0 +1,16 @@
+{
+  "name": "jogos-finc",
+  "version": "1.0.0",
+  "description": "Aplicação web interativa desenvolvida para o **Stand do Curso de Direito da UNIFAN (Centro Universitário Nobre)** durante o **FINC (Festival Internacional do Conhecimento)**, cujo tema oficial é **\"A Era da IA: A Jornada da Inteligência Humana\"**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "vercel": "^65.1.0"
+  }
+}
