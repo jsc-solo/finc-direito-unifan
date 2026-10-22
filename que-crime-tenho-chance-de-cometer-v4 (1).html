@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d0f17">
+<title>FINC | Stand de Direito UNIFAN - Que Crime Tenho Chance de Cometer?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e15;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #1c2338 0%, #0c0e15 65%);
+  --panel: #141724;
+  --panel-border: #272c42;
+  --paper: #f4efe6;
+  --paper-ink: #141416;
+  --cyan: #00e5ff;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --accent: #2563eb;
+  --muted: #94a3b8;
+  --text: #f8fafc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; border: 0; font-weight: 800; letter-spacing: .03em; }
+
+.app {
+  width: min(100%, 780px);
+  margin: auto;
+  padding: 16px 16px 40px;
+}
+
+/* TOP BRANDING BAR */
+.finc-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(20, 23, 36, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 8px 16px;
+  margin-bottom: 24px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.finc-pill {
+  background: linear-gradient(135deg, #00e5ff, #2563eb);
+  color: #0c0e15;
+  font-size: .74rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: .08em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform .15s ease;
+}
+.finc-pill:hover { transform: scale(1.04); }
+
+.stand-tag {
+  font-size: .75rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  letter-spacing: .05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stand-tag span.sep { color: var(--gold); }
+.stand-tag span.badge-law {
+  background: #f59e0b22;
+  color: #fbbf24;
+  border: 1px solid #f59e0b55;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: .65rem;
+  font-weight: 900;
+}
+
+.finc-edition {
+  font-size: .68rem;
+  color: var(--muted);
+  font-weight: 600;
+  display: none;
+}
+@media (min-width: 520px) {
+  .finc-edition { display: block; }
+}
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; animation: appear .3s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* HERO - HOME SCREEN */
+.hero {
+  text-align: center;
+  padding: 10px 0 20px;
+}
+
+.theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: var(--cyan);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.theme-badge .dot {
+  width: 7px;
+  height: 7px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.2rem, 8vw, 4.4rem);
+  line-height: .96;
+  letter-spacing: -.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 10px 0 16px;
+}
+h1 .highlight {
+  background: linear-gradient(90deg, #ef4444, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+h1 .sub-title {
+  display: block;
+  font-size: clamp(1.1rem, 4vw, 1.8rem);
+  letter-spacing: -.02em;
+  color: #94a3b8;
+  margin-top: 6px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.intro {
+  max-width: 540px;
+  margin: 0 auto 24px;
+  color: #cbd5e1;
+  line-height: 1.6;
+  font-size: .95rem;
+}
+
+/* HOW IT WORKS MINI CARDS */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0 26px;
+  text-align: left;
+}
+.step-item {
+  background: rgba(20, 23, 36, 0.6);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.step-num {
+  font-size: .7rem;
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.step-title {
+  font-size: .85rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: .72rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* MOCK PREVIEW CARD */
+.mock-card {
+  max-width: 320px;
+  margin: 0 auto 26px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  padding: 14px;
+  border-radius: 2px;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 0 1px #222;
+  text-align: left;
+}
+.mock-top {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #151515;
+  padding-bottom: 6px;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+.mock-photo {
+  height: 170px;
+  margin: 10px 0;
+  background: linear-gradient(135deg, #d8d8d8, #a9a9a9);
+  display: grid;
+  place-items: center;
+  font-size: 3.5rem;
+  color: #555;
+}
+.mock-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.mock-bottom small {
+  display: block;
+  font-size: .52rem;
+  letter-spacing: .08em;
+  color: #555;
+}
+.mock-stamp {
+  border: 2px solid var(--red);
+  color: var(--red);
+  padding: 3px 6px;
+  transform: rotate(-6deg);
+  font-size: .65rem;
+  font-weight: 900;
+}
+
+/* BUTTONS */
+.btn-play {
+  width: 100%;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: all .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.btn-play:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(239, 68, 68, 0.5);
+}
+.btn-play:active {
+  transform: translateY(1px);
+}
+.btn-play .icon {
+  font-size: 1.4rem;
+}
+
+.primary, .secondary {
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 10px;
+  transition: transform .15s, filter .15s;
+}
+.primary {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 4px 0 #991b1b;
+}
+.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.primary:active { transform: translateY(2px); box-shadow: 0 1px 0 #991b1b; }
+
+.secondary {
+  background: #1e2436;
+  color: #f1f5f9;
+  border: 1px solid var(--panel-border);
+  margin-top: 10px;
+}
+.secondary:hover { background: #262e45; }
+
+/* PANELS */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 22px;
+}
+.eyebrow {
+  color: var(--cyan);
+  font-weight: 800;
+  letter-spacing: .14em;
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  margin: 6px 0 8px;
+}
+.muted { color: var(--muted); line-height: 1.5; font-size: .9rem; }
+
+/* CAMERA SHELL */
+.camera-shell {
+  position: relative;
+  background: #050608;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  height: min(60vh, 580px);
+  min-height: 320px;
+  display: block;
+  margin: 16px 0;
+  isolation: isolate;
+  border: 1px solid var(--panel-border);
+}
+video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: translateZ(0) scaleX(-1);
+  -webkit-transform: translateZ(0) scaleX(-1);
+  pointer-events: none;
+}
+.camera-guide {
+  position: absolute;
+  inset: 12% 14%;
+  border: 2px dashed rgba(0, 229, 255, 0.6);
+  border-radius: 48% 48% 42% 42%;
+  pointer-events: none;
+  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.35);
+}
+.camera-guide::before {
+  content: "ALINHE SEU ROSTO";
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .65rem;
+  font-weight: 800;
+  color: var(--cyan);
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+
+.upload-label {
+  display: block;
+  text-align: center;
+  padding: 13px;
+  color: var(--cyan);
+  font-size: .85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+input[type=file] { display: none; }
+.preview-img {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  background: #06080e;
+  border-radius: 12px;
+  margin: 14px 0;
+  border: 1px solid var(--panel-border);
+}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.actions .primary, .actions .secondary { margin: 0; }
+
+/* LOADING */
+.loading {
+  padding: 60px 20px;
+  text-align: center;
+}
+.spinner {
+  width: 58px;
+  height: 58px;
+  border: 4px solid #272c42;
+  border-top-color: var(--cyan);
+  border-right-color: var(--red);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* RESULT CARD */
+.result-card {
+  background: var(--paper);
+  color: var(--paper-ink);
+  padding: 18px;
+  border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.65);
+  max-width: 480px;
+  margin: 20px auto;
+  position: relative;
+  text-align: left;
+}
+.result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #171717;
+  padding-bottom: 10px;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+.result-head .inst {
+  display: flex;
+  flex-direction: column;
+}
+.result-head .inst-main {
+  font-size: .75rem;
+  color: #b91c1c;
+  font-weight: 1000;
+}
+.result-photo-wrap {
+  position: relative;
+  margin: 14px auto;
+  width: min(100%, 310px);
+  aspect-ratio: 3/4;
+  background: #d6d0c4;
+  overflow: hidden;
+  border: 2px solid #171717;
+}
+#resultPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  filter: grayscale(100%) contrast(1.1);
+}
+.result-photo-wrap:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 8px solid var(--paper);
+  box-shadow: inset 0 0 0 1px #111;
+  pointer-events: none;
+}
+.id-strip {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 2px solid #171717;
+  border-bottom: 2px solid #171717;
+  padding: 7px 0;
+  font-size: .62rem;
+  font-weight: 900;
+}
+.crime-label {
+  font-size: .62rem;
+  letter-spacing: .16em;
+  font-weight: 900;
+  margin-top: 14px;
+  color: #555;
+}
+.crime-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.6rem, 6.5vw, 2.3rem);
+  line-height: .98;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -.04em;
+  margin: 6px 0 10px;
+  color: #111;
+  overflow-wrap: anywhere;
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #171717;
+  color: #fff;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border-radius: 4px;
+}
+.score {
+  font-size: 2.3rem;
+  color: var(--red);
+  font-weight: 900;
+  letter-spacing: -.06em;
+  line-height: 1;
+}
+.score-copy {
+  font-size: .66rem;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.reason {
+  font-size: .88rem;
+  line-height: 1.45;
+  font-weight: 600;
+  color: #222;
+  font-style: italic;
+  margin: 10px 0;
+}
+.result-foot {
+  font-size: .56rem;
+  line-height: 1.35;
+  text-align: center;
+  margin-top: 14px;
+  color: #555;
+  font-weight: 700;
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
+
+.result-actions {
+  max-width: 480px;
+  margin: 20px auto 0;
+}
+
+/* REFLECTION SCREEN */
+.big-reveal {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2rem, 8vw, 3.8rem);
+  line-height: .96;
+  letter-spacing: -.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 14px 0;
+}
+.big-reveal span { color: var(--cyan); }
+.reveal-panel {
+  border-left: 4px solid var(--gold);
+  background: rgba(245, 158, 11, 0.08);
+  padding: 14px 16px;
+  margin: 20px 0;
+  color: #e2e8f0;
+  line-height: 1.6;
+  border-radius: 0 8px 8px 0;
+  font-size: .95rem;
+}
+.reflection-options {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+.reflection-options button {
+  text-align: left;
+  background: #1a2030;
+  color: #e2e8f0;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: .9rem;
+  transition: all .15s ease;
+}
+.reflection-options button:hover {
+  background: #232a40;
+  border-color: #3b4566;
+}
+.reflection-options button.selected {
+  border-color: var(--cyan);
+  background: rgba(0, 229, 255, 0.12);
+  color: #fff;
+}
+
+.toast { min-height: 20px; color: #fca5a5; font-size: .84rem; margin: 8px 0; text-align: center; }
+.smallprint { font-size: .75rem; color: #94a3b8; line-height: 1.5; margin: 12px 0; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  color: #64748b;
+  font-size: .75rem;
+  margin-top: 40px;
+  line-height: 1.7;
+  border-top: 1px solid var(--panel-border);
+  padding-top: 24px;
+}
+footer a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 700;
+}
+footer a:hover { text-decoration: underline; }
+
+@media (max-width: 580px) {
+  .steps-grid { grid-template-columns: 1fr; gap: 8px; }
+  .btn-play { font-size: 1.15rem; padding: 18px 20px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- BARRA DE RECONHECIMENTO INSTITUCIONAL (FINC | DIREITO UNIFAN) -->
+  <header class="finc-bar">
+    <div class="brand-group">
+      <a href="https://festivalfinc.com.br/" target="_blank" rel="noopener" class="finc-pill" title="Visitar site oficial da FINC">
+        <span>⚡ FINC 2026</span>
+      </a>
+      <div class="stand-tag">
+        <span class="sep">|</span>
+        <span class="badge-law">DIREITO</span>
+        <strong>UNIFAN</strong>
+      </div>
+    </div>
+    <div class="finc-edition">A ERA DA IA</div>
+  </header>
+
+  <!-- TELA 1: HOME (PÁGINA INICIAL DO STAND) -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <div class="theme-badge">
+        <span class="dot"></span>
+        STAND DE DIREITO · UNIFAN · FINC
+      </div>
+      
+      <h1>
+        QUE CRIME VOCÊ TEM CHANCE DE <span class="highlight">COMETER?</span>
+        <span class="sub-title">O Algoritmo de Suspeita do Stand de Direito</span>
+      </h1>
+      
+      <p class="intro">
+        Uma Inteligência Artificial seria capaz de prever seus crimes olhando apenas para o seu rosto? 
+        Tire uma selfie no nosso stand, receba sua ficha fictícia de "suspeito" e participe deste experimento sobre ética, tecnologia e justiça.
+      </p>
+    </div>
+
+    <!-- 3 PASSOS DA DINÂMICA NO STAND -->
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">Passo 01</div>
+        <div class="step-title">📸 Tire sua Selfie</div>
+        <div class="step-desc">Captura instantânea no seu aparelho. Sua foto não é salva em servidores.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">Passo 02</div>
+        <div class="step-title">🤖 Ficha da "IA"</div>
+        <div class="step-desc">O simulador gera sua classificação criminal e índice de suspeita fictício.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">Passo 03</div>
+        <div class="step-title">⚖️ O Veredito</div>
+        <div class="step-desc">Descubra a reflexão jurídica sobre viés algorítmico e presunção de inocência.</div>
+      </div>
+    </div>
+
+    <!-- CARD MOCKUP DO EVENTO -->
+    <div class="mock-card" aria-hidden="true">
+      <div class="mock-top">
+        <span>FINC · STAND DE DIREITO UNIFAN</span>
+        <span>FICHA Nº 2026</span>
+      </div>
+      <div class="mock-photo">⚖️</div>
+      <div class="mock-bottom">
+        <div>
+          <small>Status Algorítmico</small>
+          Suspeito(a) de Brincadeira
+        </div>
+        <div class="mock-stamp">FICTÍCIO</div>
+      </div>
+    </div>
+
+    <!-- BOTÃO PRINCIPAL DE DESTAQUE: JOGAR -->
+    <button id="startBtn" class="btn-play">
+      <span class="icon">⚡</span>
+      <span>JOGAR</span>
+      <span class="icon">→</span>
+    </button>
+
+    <p class="smallprint" style="text-align: center; margin-top: 18px;">
+      Experimento acadêmico interativo de entretenimento e conscientização. O resultado é 100% fictício e aleatório. Não faz previsões e não avalia pessoas.
+    </p>
+  </section>
+
+  <!-- TELA 2: CÂMERA -->
+  <section id="cameraScreen" class="screen">
+    <div class="panel">
+      <div class="eyebrow">Etapa 01 · Captura Facial</div>
+      <h2 class="section-title">Olhe para a câmera</h2>
+      <p class="muted">Posicione seu rosto dentro da guia. Sua foto é processada estritamente neste navegador e nunca será gravada em nenhum servidor.</p>
+      
+      <div class="camera-shell">
+        <video id="video" autoplay playsinline webkit-playsinline="true" x5-playsinline="true" muted disablepictureinpicture></video>
+        <div class="camera-guide"></div>
+      </div>
+      
+      <div id="cameraMessage" class="toast" role="status"></div>
+      
+      <button id="captureBtn" class="primary">CAPTURAR MINHA FOTO</button>
+      <label class="upload-label" for="fileInput">Ou escolher foto da galeria do celular</label>
+      <input id="fileInput" type="file" accept="image/*">
+      <button id="backHome" class="secondary">← VOLTAR AO INÍCIO</button>
+    </div>
+  </section>
+
+  <!-- TELA 3: PRÉVIA -->
+  <section id="previewScreen" class="screen">
+    <div class="panel">
+      <div class="eyebrow">Etapa 02 · Confirmação</div>
+      <h2 class="section-title">Confira a imagem</h2>
+      <p class="muted">Gostou da foto ou quer tentar outro ângulo antes de gerar a ficha?</p>
+      
+      <img id="previewImage" class="preview-img" alt="Prévia da foto escolhida">
+      
+      <div class="actions">
+        <button id="retakeBtn" class="secondary">TIRAR OUTRA</button>
+        <button id="generateBtn" class="primary">GERAR FICHA →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 4: CARREGAMENTO CÔMICO -->
+  <section id="loadingScreen" class="screen">
+    <div class="panel loading">
+      <div class="spinner"></div>
+      <div class="eyebrow">Stand de Direito UNIFAN · FINC</div>
+      <h2 class="section-title">Processando Algoritmo…</h2>
+      <p class="muted" id="loadingText">Mapeando traços faciais fictícios no banco de dados…</p>
+    </div>
+  </section>
+
+  <!-- TELA 5: RESULTADO DA FICHA -->
+  <section id="resultScreen" class="screen">
+    <div class="eyebrow">Etapa 03 · Ficha do Suspeito</div>
+    <h2 class="section-title">Sua ficha fictícia está pronta!</h2>
+    <p class="muted">Atenção: Este resultado foi sorteado ao acaso. Rostos não definem condutas.</p>
+    
+    <div id="resultCard" class="result-card">
+      <div class="result-head">
+        <div class="inst">
+          <span class="inst-main">FINC 2026 · DIREITO UNIFAN</span>
+          <span>LABORATÓRIO DE ÉTICA, IA E JUSTIÇA</span>
+        </div>
+        <span id="caseNumber" style="font-weight: 900;">Nº 004281</span>
+      </div>
+
+      <div class="result-photo-wrap">
+        <img id="resultPhoto" alt="Retrato do visitante">
+      </div>
+
+      <div class="id-strip">
+        <span>STATUS: INVESTIGADO(A) POR MEMES</span>
+        <span>TIPO: FICTÍCIO</span>
+      </div>
+
+      <div class="crime-label">CRIME DO DIA</div>
+      <div id="crimeName" class="crime-name">ROUBO DE BATATAS FRITAS</div>
+
+      <div class="score-row">
+        <div id="score" class="score">87%</div>
+        <div class="score-copy">
+          ÍNDICE FICTÍCIO DE COMPATIBILIDADE<br>
+          SIMULADOR ALGORÍTMICO DO STAND
+        </div>
+      </div>
+
+      <div id="reason" class="reason">“Você disse que ia pegar só uma… e a porção inteira desapareceu misteriosamente.”</div>
+
+      <div class="result-foot">
+        PROJETO ACADÊMICO DE CONSCIENTIZAÇÃO · FESTIVALFINC.COM.BR<br>
+        PRESUNÇÃO DE INOCÊNCIA (ART. 5º, LVII DA CF/88) · RESULTADO 100% ALEATÓRIO
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button id="revealBtn" class="btn-play" style="font-size: 1.05rem; padding: 16px;">
+        <span>⚖️ REVELAR A REFLEXÃO JURÍDICA →</span>
+      </button>
+      <button id="downloadBtn" class="secondary">📥 BAIXAR FICHA EM PNG (POSTAR NOS STORIES)</button>
+      <button id="shareBtn" class="secondary">📲 COMPARTILHAR RESULTADO</button>
+      <button id="playAgainBtn" class="secondary">🔄 JOGAR NOVAMENTE</button>
+      <div id="shareMessage" class="toast" role="status"></div>
+    </div>
+  </section>
+
+  <!-- TELA 6: REFLEXÃO ÉTICA & JURÍDICA -->
+  <section id="reflectionScreen" class="screen">
+    <div class="eyebrow">Stand de Direito UNIFAN · FINC</div>
+    <h2 class="big-reveal">Você foi rotulado por uma <span>imagem.</span></h2>
+    
+    <p class="intro" style="text-align:left; margin:0 0 16px;">
+      Mas nenhuma fotografia ou algoritmo é capaz de revelar o caráter, os sentimentos, as intenções ou o futuro de alguém.
+    </p>
+
+    <div class="reveal-panel">
+      <strong>O resultado foi 100% aleatório e fictício.</strong><br>
+      A Inteligência Artificial não consegue (e não deve) prever a conduta de seres humanos a partir de traços estéticos. Criamos esta experiência no Stand de Direito da UNIFAN para alertar sobre o perigo de se acreditar cegamente em julgamentos visuais automatizados.
+    </div>
+
+    <h3 style="font-size: 1.15rem; margin: 20px 0 8px; font-weight: 800;">Como você se sentiu ao ver seu rosto associado a uma acusação?</h3>
+    <div id="reflectionOptions" class="reflection-options">
+      <button data-answer="surpresa">Sentimento de estranheza ou desconforto imediato.</button>
+      <button data-answer="diversao">Achei engraçado, porque sabia que era uma brincadeira inofensiva.</button>
+      <button data-answer="reflexao">Fez-me refletir sobre como a sociedade e os algoritmos julgam pessoas injustamente.</button>
+      <button data-answer="outro">Tive outra reflexão.</button>
+    </div>
+    <p id="reflectionThanks" class="smallprint" style="color: var(--cyan);" aria-live="polite"></p>
+
+    <div class="reveal-panel" style="border-left-color: var(--cyan); background: rgba(0, 229, 255, 0.08);">
+      <strong>O Veredito do Direito na Era da IA</strong><br>
+      Na história do Direito, teorias do século XIX (como o positivismo criminológico de Cesare Lombroso) tentavam associar anatomia facial ao crime — uma pseudociência superada que apenas alimentava o preconceito.<br><br>
+      Hoje, o avanço do reconhecimento facial e das IAs traz de volta esse risco se não houver ética e regulamentação rígida: viés algorítmico, racismo estrutural e prisões injustas de inocentes.<br><br>
+      <strong>A Constituição Brasileira é categórica:</strong> Ninguém será considerado culpado sem o devido processo legal (Art. 5º, LVII). A aparência não é prova, suspeita não é veredito e nenhum algoritmo substitui a justiça humana!
+    </div>
+
+    <button id="finishBtn" class="primary" style="margin-top: 14px;">VOLTAR À PÁGINA INICIAL DO STAND</button>
+  </section>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer>
+    <p>
+      <strong>FINC · Feira Internacional do Conhecimento 2026</strong><br>
+      Realização do Stand: <strong>Curso de Direito · UNIFAN (Centro Universitário Nobre)</strong><br>
+      Tema do Festival: <em>"A Era da IA: A Jornada da Inteligência Humana"</em><br>
+      Saiba mais sobre a feira em: <a href="https://festivalfinc.com.br/" target="_blank" rel="noopener">festivalfinc.com.br</a>
+    </p>
+    <p style="margin-top: 10px; font-size: .68rem; color: #475569;">
+      Processamento 100% local no dispositivo. Nenhuma foto do visitante é transmitida ou salva.
+    </p>
+  </footer>
+
+</div>
+
+<canvas id="captureCanvas" hidden></canvas>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const screens = ['home', 'cameraScreen', 'previewScreen', 'loadingScreen', 'resultScreen', 'reflectionScreen'];
+
+  const crimes = [
+    {name: 'ROUBO DE BATATAS FRITAS', reason: '“Você jurou que ia pegar só uma… e a porção inteira sumiu.”'},
+    {name: 'FURTO DE COBERTOR', reason: '“Alguém passou frio no inverno enquanto você dormia tranquilamente empacotado(a).”'},
+    {name: 'FRAUDE NO UNO', reason: '“Fontes afirmam que você comprou +4 e escondeu embaixo da perna.”'},
+    {name: 'CONTRABANDO DE DOCES', reason: '“Chocolates escondidos na gaveta do quarto configuram flagrante delito.”'},
+    {name: 'INVASÃO DA GELADEIRA', reason: '“O pedaço de bolo sumiu às 02h47 em uma operação silenciosa.”'},
+    {name: 'APROPRIAÇÃO DE CARREGADOR', reason: '“O carregador de celular emprestado nunca mais retornou ao legítimo dono.”'},
+    {name: 'CRIME CONTRA A PONTUALIDADE', reason: '“Mandou mensagem dizendo ‘já estou saindo’, mas ainda estava procurando a chave.”'},
+    {name: 'DESAPARECIMENTO DE PIZZA', reason: '“O último pedaço da caixa evaporou misteriosamente na sua presença.”'},
+    {name: 'MONOPÓLIO DO CONTROLE', reason: '“Negou-se terminantemente a passar o controle remoto para os demais presentes.”'},
+    {name: 'SPAM DE MEMES NO GRUPO', reason: '“Encaminhou 38 figurinhas e vídeos antes das oito da manhã.”'},
+    {name: 'SUSPEITO(A) DE ESTUDAR DEMAIS', reason: '“Flagrado(a) lendo a Constituição Federal em momentos de lazer na FINC.”'},
+    {name: 'VIOLAÇÃO DE AUDIÊNCIA FICTÍCIA', reason: '“Argumentou de forma tão convincente que convenceu até quem não queria.”'},
+    {name: 'ESTELIONATO GASTRONÔMICO', reason: '“Prometeu cozinhar um banquete e no fim pediu delivery.”'},
+    {name: 'DANO À SERIEDADE', reason: '“Começou a rir em um momento que exigia postura 100% compenetrada.”'},
+    {name: 'CRIME DE LER O FINAL DO LIVRO', reason: '“Espiou as últimas páginas antes mesmo de chegar na metade da história.”'},
+    {name: 'FALSIFICAÇÃO DE DESCULPAS', reason: '“Alegou que a internet caiu bem na hora que pediram uma tarefa difícil.”'}
+  ];
+
+  let stream = null, photoUrl = null, photoBlob = null, result = null, lastCrime = -1;
+
+  function show(id) {
+    screens.forEach(s => $(s).classList.toggle('active', s === id));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
+    $('video').srcObject = null;
+  }
+
+  async function startCamera() {
+    $('cameraMessage').textContent = '';
+    show('cameraScreen');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      $('cameraMessage').textContent = 'Câmera indisponível neste navegador. Use a opção "Escolher foto da galeria" abaixo.';
+      return;
+    }
+    try {
+      stopCamera();
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'user' },
+          width: { ideal: 1280 },
+          height: { ideal: 1706 }
+        },
+        audio: false
+      });
+      const video = $('video');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.controls = false;
+      video.srcObject = stream;
+      await video.play();
+    } catch (e) {
+      $('cameraMessage').textContent = 'Não foi possível acessar a câmera. Verifique a permissão ou escolha uma foto do aparelho.';
+    }
+  }
+
+  function setPhoto(blob) {
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    photoBlob = blob;
+    photoUrl = URL.createObjectURL(blob);
+    $('previewImage').src = photoUrl;
+    stopCamera();
+    show('previewScreen');
+  }
+
+  $('startBtn').addEventListener('click', startCamera);
+  $('backHome').addEventListener('click', () => { stopCamera(); show('home'); });
+
+  $('captureBtn').addEventListener('click', () => {
+    const v = $('video');
+    if (!v.videoWidth) {
+      $('cameraMessage').textContent = 'Aguarde a câmera iniciar totalmente.';
+      return;
+    }
+    const shell = document.querySelector('.camera-shell');
+    const targetRatio = (shell.clientWidth || 360) / (shell.clientHeight || 480);
+    const sourceW = v.videoWidth, sourceH = v.videoHeight, sourceRatio = sourceW / sourceH;
+    let sx = 0, sy = 0, sw = sourceW, sh = sourceH;
+
+    if (sourceRatio > targetRatio) {
+      sw = sourceH * targetRatio;
+      sx = (sourceW - sw) / 2;
+    } else {
+      sh = sourceW / targetRatio;
+      sy = (sourceH - sh) / 2;
+    }
+
+    const outH = 1200, outW = Math.round(outH * targetRatio);
+    const c = $('captureCanvas');
+    c.width = outW; c.height = outH;
+    const ctx = c.getContext('2d');
+
+    // Espelha a imagem da webcam frontal
+    ctx.translate(c.width, 0);
+    ctx.scale(-1, 1);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(v, sx, sy, sw, sh, 0, 0, c.width, c.height);
+
+    c.toBlob(blob => {
+      if (blob) setPhoto(blob);
+      else $('cameraMessage').textContent = 'Falha ao capturar foto. Tente novamente.';
+    }, 'image/jpeg', 0.94);
+  });
+
+  $('fileInput').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (f && f.type.startsWith('image/')) setPhoto(f);
+    e.target.value = '';
+  });
+
+  $('retakeBtn').addEventListener('click', startCamera);
+
+  function randomCrime() {
+    let i = Math.floor(Math.random() * crimes.length);
+    if (crimes.length > 1 && i === lastCrime) {
+      i = (i + 1 + Math.floor(Math.random() * (crimes.length - 1))) % crimes.length;
+    }
+    lastCrime = i;
+    return crimes[i];
+  }
+
+  $('generateBtn').addEventListener('click', () => {
+    if (!photoUrl) return;
+    show('loadingScreen');
+
+    const messages = [
+      'Alinhando biometria ao Código Penal…',
+      'Consultando o banco de dados do Stand de Direito…',
+      'Calculando compatibilidade algorítmica…',
+      'Carimbando a ficha fictícia para a FINC…'
+    ];
+    let n = 0;
+    $('loadingText').textContent = messages[0];
+    const timer = setInterval(() => {
+      $('loadingText').textContent = messages[++n % messages.length];
+    }, 450);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      const c = randomCrime();
+      result = {
+        ...c,
+        score: 65 + Math.floor(Math.random() * 35),
+        caseNo: String(1000 + Math.floor(Math.random() * 9000))
+      };
+
+      $('resultPhoto').src = photoUrl;
+      $('crimeName').textContent = result.name;
+      $('score').textContent = result.score + '%';
+      $('reason').textContent = result.reason;
+      $('caseNumber').textContent = 'Nº ' + result.caseNo;
+
+      show('resultScreen');
+    }, 1400);
+  });
+
+  // Função auxiliar para quebrar texto no Canvas de forma segura
+  function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
+    const words = text.split(' ');
+    let line = '';
+    let currentY = y;
+    let linesCount = 0;
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + (line ? ' ' : '') + words[i];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && i > 0) {
+        ctx.fillText(line, x, currentY);
+        line = words[i];
+        currentY += lineHeight;
+        linesCount++;
+        if (linesCount >= maxLines - 1 && i < words.length - 1) {
+          // Última linha com reticências se exceder
+          line += '…';
+          break;
+        }
+      } else {
+        line = testLine;
+      }
+    }
+    if (line) {
+      ctx.fillText(line, x, currentY);
+    }
+    return currentY;
+  }
+
+  // Gera o PNG em alta resolução (1080x1350) com branding da FINC e DIREITO UNIFAN
+  async function makeCardBlob() {
+    if (!photoUrl || !result) throw new Error('Resultado indisponível');
+    const W = 1080, H = 1350;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+
+    // Fundo papel envelhecido
+    x.fillStyle = '#f4efe6';
+    x.fillRect(0, 0, W, H);
+
+    // Topo estilizado
+    x.fillStyle = '#0f172a';
+    x.fillRect(0, 0, W, 130);
+
+    // Destaque FINC e DIREITO UNIFAN
+    x.fillStyle = '#00e5ff';
+    x.font = '900 24px Arial';
+    x.fillText('FINC 2026 · STAND DE DIREITO UNIFAN', 50, 48);
+
+    x.fillStyle = '#f8fafc';
+    x.font = '700 20px Arial';
+    x.fillText('LABORATÓRIO DE ÉTICA, IA E JUSTIÇA · festivalfinc.com.br', 50, 84);
+
+    x.fillStyle = '#f59e0b';
+    x.font = '900 22px Arial';
+    x.fillText('FICHA Nº ' + result.caseNo, W - 220, 68);
+
+    // Imagem do Usuário
+    const img = new Image();
+    img.src = photoUrl;
+    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
+
+    const bx = 190, by = 160, bw = 700, bh = 570;
+    x.fillStyle = '#c9c3b7';
+    x.fillRect(bx, by, bw, bh);
+
+    const scale = Math.max(bw / img.width, bh / img.height);
+    const sw = bw / scale, sh = bh / scale;
+    const sx = (img.width - sw) / 2, sy = (img.height - sh) / 2;
+
+    x.save();
+    x.beginPath();
+    x.rect(bx, by, bw, bh);
+    x.clip();
+    x.filter = 'grayscale(100%) contrast(1.15)';
+    x.drawImage(img, sx, sy, sw, sh, bx, by, bw, bh);
+    x.filter = 'none';
+    x.restore();
+
+    x.strokeStyle = '#111827';
+    x.lineWidth = 6;
+    x.strokeRect(bx, by, bw, bh);
+
+    // Carimbo Fictício
+    x.save();
+    x.translate(760, 220);
+    x.rotate(0.14);
+    x.strokeStyle = '#dc2626';
+    x.lineWidth = 4;
+    x.strokeRect(-10, -10, 180, 52);
+    x.fillStyle = '#dc2626';
+    x.font = '900 22px Arial';
+    x.fillText('FICTÍCIO', 20, 26);
+    x.restore();
+
+    // Divisória
+    x.fillStyle = '#111827';
+    x.fillRect(50, 755, 980, 4);
+
+    x.font = '900 22px Arial';
+    x.fillStyle = '#64748b';
+    x.fillText('CRIME FICTÍCIO ATRIBUÍDO PELA "IA"', 52, 795);
+
+    // Nome do Crime com Quebra Automática
+    x.fillStyle = '#0f172a';
+    x.font = '900 48px Arial';
+    const endCrimeY = drawWrappedText(x, result.name, 50, 850, 980, 54, 2);
+
+    // Barra de Pontuação
+    const scoreY = Math.max(endCrimeY + 25, 930);
+    x.fillStyle = '#0f172a';
+    x.fillRect(50, scoreY, 980, 95);
+
+    x.fillStyle = '#ef4444';
+    x.font = '900 64px Arial';
+    x.fillText(result.score + '%', 75, scoreY + 70);
+
+    x.fillStyle = '#f8fafc';
+    x.font = '800 22px Arial';
+    x.fillText('COMPATIBILIDADE FICTÍCIA DO SIMULADOR', 270, scoreY + 44);
+    x.font = '600 16px Arial';
+    x.fillStyle = '#94a3b8';
+    x.fillText('Experimento acadêmico: rostos humanos não determinam condutas ou culpabilidade.', 270, scoreY + 74);
+
+    // Motivo do Crime
+    x.fillStyle = '#1e293b';
+    x.font = 'italic 700 26px Arial';
+    drawWrappedText(x, result.reason, 52, scoreY + 145, 970, 36, 3);
+
+    // Rodapé Legal com os Princípios do Direito
+    x.fillStyle = '#e2e8f0';
+    x.fillRect(50, 1240, 980, 60);
+    x.strokeStyle = '#cbd5e1';
+    x.strokeRect(50, 1240, 980, 60);
+
+    x.font = '800 15px Arial';
+    x.fillStyle = '#334155';
+    x.fillText('STAND DE DIREITO UNIFAN · FINC 2026 · "A ERA DA IA: A JORNADA DA INTELIGÊNCIA HUMANA"', 70, 1265);
+    x.font = '600 13px Arial';
+    x.fillStyle = '#64748b';
+    x.fillText('Presunção de Inocência (Art. 5º, LVII da CF/88) · Nenhuma foto é armazenada em servidores.', 70, 1285);
+
+    return await new Promise(resolve => c.toBlob(resolve, 'image/png'));
+  }
+
+  $('downloadBtn').addEventListener('click', async () => {
+    const b = $('downloadBtn');
+    b.disabled = true;
+    b.textContent = 'GERANDO PNG EM ALTA DEFINIÇÃO…';
+    try {
+      const blob = await makeCardBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `finc-direito-unifan-${result.caseNo}.png`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      $('shareMessage').textContent = 'Ficha gerada com sucesso! Confira seus downloads para postar nos stories.';
+    } catch (e) {
+      $('shareMessage').textContent = 'Não foi possível gerar a imagem. Tente novamente.';
+    } finally {
+      b.disabled = false;
+      b.textContent = '📥 BAIXAR FICHA EM PNG (POSTAR NOS STORIES)';
+    }
+  });
+
+  $('shareBtn').addEventListener('click', async () => {
+    $('shareMessage').textContent = '';
+    try {
+      const blob = await makeCardBlob();
+      const file = new File([blob], `finc-direito-unifan-${result.caseNo}.png`, { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: 'Minha Ficha no Stand de Direito UNIFAN | FINC',
+          text: 'Participei do experimento de IA e Direito na FINC 2026! festivalfinc.com.br',
+          files: [file]
+        });
+      } else if (navigator.share) {
+        await navigator.share({
+          title: 'Que Crime Tenho Chance de Cometer? | FINC Direito UNIFAN',
+          text: 'Fiz o teste no Stand de Direito da UNIFAN na FINC 2026! Confira: festivalfinc.com.br'
+        });
+      } else {
+        $('shareMessage').textContent = 'Compartilhamento nativo indisponível. Clique em "Baixar Ficha em PNG" e envie nas suas redes!';
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        $('shareMessage').textContent = 'Não foi possível compartilhar direto. Baixe a ficha em PNG acima.';
+      }
+    }
+  });
+
+  $('revealBtn').addEventListener('click', () => show('reflectionScreen'));
+
+  $('reflectionOptions').querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      $('reflectionOptions').querySelectorAll('button').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      $('reflectionThanks').textContent = 'Obrigado por registrar sua reação! Sua reflexão é parte fundamental do debate ético da FINC.';
+    });
+  });
+
+  $('playAgainBtn').addEventListener('click', () => {
+    photoUrl = null; photoBlob = null; result = null;
+    startCamera();
+  });
+
+  $('finishBtn').addEventListener('click', () => {
+    stopCamera();
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    photoUrl = null; photoBlob = null; result = null;
+    show('home');
+  });
+
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopCamera(); });
+  window.addEventListener('pagehide', stopCamera);
+})();
+</script>
+</body>
+</html>
