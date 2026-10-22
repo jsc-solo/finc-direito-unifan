@@ -1,19 +1,28 @@
-# FINC | Stand de Direito UNIFAN · Que Crime Tenho Chance de Cometer?
+# FINC | Stand de Direito UNIFAN · Jogos Interativos
 
-Aplicação web interativa desenvolvida para o **Stand do Curso de Direito da UNIFAN (Centro Universitário Nobre)** durante o **FINC (Festival Internacional do Conhecimento)**, cujo tema oficial é **"A Era da IA: A Jornada da Inteligência Humana"**.
+Aplicações web interativas desenvolvidas para o **Stand do Curso de Direito da UNIFAN (Centro Universitário Nobre)** durante o **FINC (Festival Internacional do Conhecimento)**, cujo tema oficial é **"A Era da IA: A Jornada da Inteligência Humana"**.
 
 🔗 **Site Oficial do Festival:** [festivalfinc.com.br](https://festivalfinc.com.br/)
 
 ---
 
-## ⚖️ Proposta do Experimento
+## 🎮 Jogos Disponíveis no Stand
 
-O jogo simula um algoritmo de Inteligência Artificial que analisa a selfie do visitante para gerar uma **"Ficha de Suspeito"** fictícia e cômica (ex.: *Roubo de Batatas Fritas*, *Fraude no UNO*, etc.). 
+### 1. Que Crime Tenho Chance de Cometer? (`index.html`)
+* **Proposta:** Simula um algoritmo biométrico de "IA" que tira uma selfie do visitante e gera uma ficha de suspeito cômica e fictícia com pontuação de compatibilidade.
+* **O Veredito:** Conduz o participante à reflexão sobre a presunção de inocência (Art. 5º, LVII da CF/88), a falácia do lombrosianismo e os riscos do viés algorítmico no reconhecimento facial.
+* **Recursos:** Exportação da ficha em alta resolução (1080 × 1350 px) personalizada para postar nos Stories do Instagram.
 
-Ao final, a aplicação desconstrói a brincadeira e conduz o participante a uma **reflexão ética e jurídica**:
-* **Presunção de Inocência:** Como garantido pelo Art. 5º, LVII da Constituição Federal de 1988 (*"Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória"*).
-* **Superação do Lombrosianismo:** As teorias do século XIX que tentavam associar anatomia facial ao crime são pseudociências perigosas.
-* **Perigos do Viés Algorítmico:** O reconhecimento facial automatizado sem supervisão jurídica e ética gera riscos de estigmatização e prisões injustas de inocentes.
+### 2. CSI Match (`csi-match.html`)
+* **Proposta:** Jogo dinâmico com mecânica de **Swipe (estilo Tinder)** onde o visitante atua como jurado criminal.
+* **Dinâmica:**
+  * O jogador visualiza a foto do acusado(a), a imputação penal e 4 provas periciais/testemunhais.
+  * **Deslizar para a Esquerda (🛡️):** Absolver (Inocente).
+  * **Deslizar para a Direita (⚖️):** Condenar (Culpado).
+  * **Veredito Popular em Tempo Real:** Exibe o percentual de visitantes que votaram por condenar vs. absolver aquele réu.
+  * **10 Casos Reais/Simulados:** 5 homens e 5 mulheres com dilemas jurídicos modernos (crimes cibernéticos, deepfake de voz, legítima defesa, LGPD, dano ao patrimônio, etc.).
+  * **Perfil de Juiz:** Ao final dos 10 casos, classifica o jogador em perfis jurídicos (*Garantista Constitucional*, *Magistrado Equilibrado* ou *Punitivista Cauteloso*).
+* **Áudio Dinâmico:** Efeitos sonoros sintetizados via Web Audio API (sem dependências de áudio externas).
 
 ---
 

@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#07090e">
+<title>CSI Match | Stand de Direito UNIFAN · FINC 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090e;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #151a2d 0%, #07090e 75%);
+  --panel: #111522;
+  --panel-border: #212940;
+  --cyan: #00f0ff;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --green: #10b981;
+  --paper: #f1ede4;
+  --paper-dark: #1e2230;
+  --muted: #8e9bb0;
+  --text: #f8fafc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button { font: inherit; cursor: pointer; border: 0; }
+
+.app {
+  width: min(100%, 540px);
+  margin: auto;
+  padding: 12px 14px 30px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP HEADER */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(17, 21, 34, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin-bottom: 12px;
+}
+
+.brand-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.csi-badge {
+  background: linear-gradient(135deg, #00f0ff, #2563eb);
+  color: #07090e;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: .78rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: .06em;
+}
+.stand-title {
+  font-size: .72rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  letter-spacing: .04em;
+}
+.stand-title span { color: var(--gold); }
+
+.hub-link {
+  font-size: .68rem;
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  padding: 4px 9px;
+  border-radius: 999px;
+  transition: all .15s;
+}
+.hub-link:hover { background: rgba(0, 240, 255, 0.15); }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  margin-bottom: 12px;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.progress-track {
+  height: 6px;
+  background: #1a2033;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid #27314d;
+}
+.progress-fill {
+  height: 100%;
+  width: 10%;
+  background: linear-gradient(90deg, #00f0ff, #f59e0b);
+  border-radius: 999px;
+  transition: width .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* CARD ARENA (SWIPE CONTAINER) */
+.arena {
+  position: relative;
+  flex: 1;
+  min-height: 520px;
+  max-height: 640px;
+  perspective: 1000px;
+  display: grid;
+  place-items: center;
+}
+
+/* CARD */
+.suspect-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-height: 590px;
+  background: #101524;
+  border: 1px solid #283350;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  transform-origin: 50% 100%;
+  transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s ease;
+}
+.suspect-card:active { cursor: grabbing; }
+
+/* STAMPS (SWIPE FEEDBACK) */
+.stamp {
+  position: absolute;
+  top: 36px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 50;
+  transition: opacity .1s ease;
+}
+.stamp-innocent {
+  left: 20px;
+  border: 4px solid var(--green);
+  color: var(--green);
+  transform: rotate(-15deg);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+}
+.stamp-guilty {
+  right: 20px;
+  border: 4px solid var(--red);
+  color: var(--red);
+  transform: rotate(15deg);
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+}
+
+/* PHOTO AREA */
+.photo-box {
+  position: relative;
+  height: 48%;
+  background: #090c14;
+  overflow: hidden;
+}
+.suspect-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  filter: contrast(1.08) brightness(0.96);
+  pointer-events: none;
+}
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(16, 21, 36, 0.95) 96%);
+}
+.case-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: .06em;
+}
+.evidence-count-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: .65rem;
+  font-weight: 800;
+}
+
+/* SUSPECT INFO */
+.card-content {
+  flex: 1;
+  padding: 10px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+.suspect-header {
+  margin-bottom: 6px;
+}
+.suspect-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.suspect-age {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.crime-accused {
+  display: inline-block;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: .75rem;
+  font-weight: 800;
+  margin-top: 4px;
+  letter-spacing: .02em;
+}
+
+/* EVIDENCE LIST */
+.evidences-title {
+  font-size: .68rem;
+  color: var(--muted);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 8px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.evidences-title span { color: var(--gold); }
+.evidence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.evidence-pill {
+  background: #161c2e;
+  border: 1px solid #242e47;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: .75rem;
+  line-height: 1.35;
+  color: #cbd5e1;
+  display: flex;
+  gap: 8px;
+}
+.evidence-pill .icon { flex-shrink: 0; font-size: .85rem; }
+
+.legal-dilemma {
+  background: rgba(0, 240, 255, 0.06);
+  border-left: 3px solid var(--cyan);
+  padding: 5px 8px;
+  border-radius: 0 6px 6px 0;
+  font-size: .7rem;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+.legal-dilemma strong { color: var(--cyan); font-weight: 700; }
+
+/* SWIPE ACTION CONTROLS */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 14px;
+}
+.btn-action {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+  position: relative;
+}
+.btn-action:hover { transform: scale(1.08); }
+.btn-action:active { transform: scale(0.94); }
+
+.btn-innocent {
+  background: #0f271e;
+  border: 2px solid var(--green);
+  color: var(--green);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+}
+.btn-info {
+  width: 48px;
+  height: 48px;
+  background: #172033;
+  border: 1.5px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 1.15rem;
+}
+.btn-guilty {
+  background: #2b1115;
+  border: 2px solid var(--red);
+  color: var(--red);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+}
+.control-sub {
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 6px;
+}
+.sub-innocent { color: var(--green); }
+.sub-guilty { color: var(--red); }
+
+/* POPUP VERDICT MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.verdict-box {
+  background: #121727;
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  width: min(100%, 460px);
+  padding: 24px 20px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+  text-align: center;
+  transform: translateY(20px) scale(0.95);
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-overlay.active .verdict-box { transform: none; }
+
+.verdict-header {
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.your-vote-pill {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  margin: 10px 0 16px;
+  text-transform: uppercase;
+}
+.vote-innocent {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1.5px solid var(--green);
+}
+.vote-guilty {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1.5px solid var(--red);
+}
+
+.stats-title {
+  font-size: .85rem;
+  font-weight: 800;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+.stats-bars {
+  margin: 12px 0 16px;
+}
+.bar-track {
+  height: 28px;
+  background: #1e263d;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid #2e3a5a;
+  position: relative;
+}
+.bar-guilty {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  font-size: .75rem;
+  font-weight: 900;
+  color: #fff;
+  transition: width .8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bar-innocent {
+  background: linear-gradient(90deg, #059669, #10b981);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-size: .75rem;
+  font-weight: 900;
+  color: #fff;
+  transition: width .8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lesson-box {
+  background: #182035;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: .78rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+  margin: 14px 0 18px;
+}
+.lesson-box strong { color: var(--gold); display: block; margin-bottom: 3px; }
+
+.btn-next {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #00f0ff, #2563eb);
+  color: #07090e;
+  font-weight: 900;
+  border-radius: 12px;
+  font-size: 1rem;
+  letter-spacing: .04em;
+  box-shadow: 0 8px 20px rgba(0, 240, 255, 0.3);
+  transition: filter .15s, transform .15s;
+}
+.btn-next:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* FINAL SCORE SCREEN */
+.screen-final {
+  display: none;
+  text-align: center;
+  padding: 20px 8px;
+}
+.screen-final.active { display: block; animation: appear .3s ease; }
+@keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.profile-card {
+  background: #111626;
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+.profile-badge {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.profile-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 10px 0 6px;
+}
+.profile-desc {
+  font-size: .88rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.history-summary {
+  background: #0d111d;
+  border: 1px solid #1e263d;
+  border-radius: 14px;
+  padding: 14px;
+  margin: 16px 0;
+  text-align: left;
+  font-size: .78rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #1a2236;
+}
+.history-row:last-child { border-bottom: 0; }
+
+.final-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn-primary-glow {
+  padding: 16px;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  font-weight: 900;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+}
+.btn-secondary-dark {
+  padding: 14px;
+  background: #172033;
+  color: #e2e8f0;
+  border: 1px solid var(--panel-border);
+  font-weight: 700;
+  border-radius: 12px;
+  font-size: .9rem;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR INSTITUCIONAL -->
+  <header class="top-bar">
+    <div class="brand-tag">
+      <span class="csi-badge">CSI MATCH</span>
+      <div class="stand-title">DIREITO <span>UNIFAN</span> · FINC</div>
+    </div>
+    <a href="index.html" class="hub-link">← OUTRO JOGO</a>
+  </header>
+
+  <!-- PROGRESSO DOS 10 CASOS -->
+  <div id="progressWrap" class="progress-wrap">
+    <div class="progress-meta">
+      <span id="caseIndicator">CASO 01 DE 10</span>
+      <span id="juryRole">TRIBUNAL DO JÚRI</span>
+    </div>
+    <div class="progress-track">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- JOGO PRINCIPAL (CARDS) -->
+  <main id="gameMain" style="display:flex; flex-direction:column; flex:1;">
+    <div class="arena" id="arena">
+      <!-- O Card do Suspeito Atual é renderizado aqui via JS -->
+    </div>
+
+    <!-- BOTÕES DE CONTROLE INFERIORES -->
+    <div class="controls">
+      <div>
+        <button id="btnInnocent" class="btn-action btn-innocent" title="Deslizar para a Esquerda (Absolver)">🛡️</button>
+        <div class="control-sub sub-innocent">ABSOLVER</div>
+      </div>
+      <div>
+        <button id="btnEvidence" class="btn-action btn-info" title="Examinar Provas">🔍</button>
+        <div class="control-sub" style="color:var(--cyan);">PROVAS</div>
+      </div>
+      <div>
+        <button id="btnGuilty" class="btn-action btn-guilty" title="Deslizar para a Direita (Condenar)">⚖️</button>
+        <div class="control-sub sub-guilty">CONDENAR</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL DE VEREDITO E ESTATÍSTICA DO CASO -->
+  <div id="verdictModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="verdict-box">
+      <div class="verdict-header">DECISÃO REGISTRADA</div>
+      <div id="modalYourVote" class="your-vote-pill vote-guilty">VOCÊ CONDENOU ⚖️</div>
+
+      <div class="stats-title">Veredito dos Visitantes do Stand:</div>
+      <div class="stats-bars">
+        <div class="bar-track">
+          <div id="barGuilty" class="bar-guilty" style="width: 60%;">60% CONDENARAM</div>
+          <div id="barInnocent" class="bar-innocent" style="width: 40%;">40% ABSOLVERAM</div>
+        </div>
+      </div>
+
+      <div class="lesson-box">
+        <strong>⚖️ Princípio Jurídico do Caso:</strong>
+        <span id="modalLegalLesson">Na dúvida razoável sobre a autoria, prevalece o princípio in dubio pro reo (Art. 5º da CF/88).</span>
+      </div>
+
+      <button id="btnNextCase" class="btn-next">PRÓXIMO CASO →</button>
+    </div>
+  </div>
+
+  <!-- TELA FINAL DE RESULTADO DO JOGADOR -->
+  <section id="screenFinal" class="screen-final">
+    <span class="csi-badge" style="font-size: .85rem; padding: 5px 12px;">JULGAMENTO CONCLUÍDO</span>
+    <h1 style="font-family:'Space Grotesk',sans-serif; font-size: 2rem; margin: 12px 0 4px;">Seu Perfil de Jurado</h1>
+    <p style="color:var(--muted); font-size: .85rem;">Stand de Direito UNIFAN · FINC 2026</p>
+
+    <div class="profile-card">
+      <div id="finalProfileBadge" class="profile-badge">GARANTISTA CONSTITUCIONAL</div>
+      <div id="finalProfileTitle" class="profile-title">O Defensor da Dúvida Razoável</div>
+      <p id="finalProfileDesc" class="profile-desc">
+        Você priorizou a presunção de inocência e exigiu provas robustas. Para você, é preferível absolver um suspeito com provas frágeis a correr o risco de condenar um inocente.
+      </p>
+    </div>
+
+    <div class="history-summary">
+      <div style="font-weight: 800; color: #fff; margin-bottom: 8px;">Resumo dos 10 Casos Julgados:</div>
+      <div id="historyList"></div>
+    </div>
+
+    <div class="final-cta">
+      <button id="btnPlayAgain" class="btn-primary-glow">JOGAR CSI MATCH NOVAMENTE 🔄</button>
+      <a href="index.html" class="btn-secondary-dark" style="text-decoration:none;">JOGAR "QUE CRIME POSSO COMETER?" 📸</a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  // Áudio Sintetizado Nativo (Web Audio API) para Efeitos Sonoros sem arquivos externos
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playTone(freq, type, duration, gainVal = 0.15) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+  const sounds = {
+    swipe: () => playTone(320, 'sine', 0.18, 0.1),
+    guilty: () => { playTone(180, 'sawtooth', 0.25, 0.2); setTimeout(() => playTone(130, 'triangle', 0.35, 0.25), 80); },
+    innocent: () => { playTone(440, 'sine', 0.15, 0.15); setTimeout(() => playTone(660, 'sine', 0.25, 0.18), 100); },
+    pop: () => playTone(540, 'triangle', 0.1, 0.12)
+  };
+
+  // BANCO DE 10 CASOS JURÍDICOS (5 HOMENS E 5 MULHERES)
+  const suspects = [
+    {
+      id: 1,
+      name: "Marcos Vinicius",
+      gender: "M",
+      age: 35,
+      photo: "./assets/suspects/suspect_01.png",
+      crime: "Furto Qualificado de Protótipo de IA",
+      context: "Dispositivo de IA sumiu de um laboratório durante o festival FINC.",
+      evidences: [
+        { icon: "📹", text: "Câmera de segurança registra vulto usando jaqueta idêntica à do réu." },
+        { icon: "🎫", text: "Crachá do réu registrou entrada no bloco 10 minutos antes do sumiço." },
+        { icon: "🗣️", text: "Álibi: Colegas afirmam que ele estava na lanchonete, mas sem precisão de horário." },
+        { icon: "🧪", text: "Perícia não encontrou impressões digitais de Marcos na bancada." }
+      ],
+      legalLesson: "Princípio do In Dubio Pro Reo (Art. 5º da CF/88): indícios circunstanciais sem prova material direta justificam a absolvição.",
+      baseGuilty: 58
+    },
+    {
+      id: 2,
+      name: "Camila Silveira",
+      gender: "F",
+      age: 28,
+      photo: "./assets/suspects/suspect_02.png",
+      crime: "Vazamento de Dados Sigilosos (LGPD)",
+      context: "Base confidencial de clientes de uma startup foi exportada e vendida na dark web.",
+      evidences: [
+        { icon: "💻", text: "O download foi feito através do login e senha pessoal de Camila às 23h40." },
+        { icon: "🦠", text: "Laudo pericial forense constatou malware de captura de senhas em seu notebook." },
+        { icon: "💰", text: "Investigação fiscal não encontrou depósitos suspeitos em suas contas." },
+        { icon: "⚠️", text: "Camila havia acabado de receber proposta de emprego de empresa concorrente." }
+      ],
+      legalLesson: "Cadeia de Custódia Digital: o mero uso de credenciais não prova a autoria se houve contaminação prévia da máquina por vírus.",
+      baseGuilty: 46
+    },
+    {
+      id: 3,
+      name: "Rafael Duarte",
+      gender: "M",
+      age: 52,
+      photo: "./assets/suspects/suspect_03.png",
+      crime: "Homicídio Tentado em Suposta Legítima Defesa",
+      context: "Disparou contra um invasor que entrou no quintal de sua casa à meia-noite.",
+      evidences: [
+        { icon: "🔫", text: "Arma com posse legal registrada em nome de Rafael." },
+        { icon: "🎯", text: "O invasor foi atingido no ombro, em ângulo lateral traseiro perto do portão." },
+        { icon: "🔪", text: "O invasor portava uma faca de caça de 20cm ao ser socorrido." },
+        { icon: "⚖️", text: "Acusação alega excesso doloso; defesa alega legítima defesa putativa na penumbra." }
+      ],
+      legalLesson: "Legítima Defesa (Art. 25 do Código Penal): o uso moderado dos meios necessários em situação de perigo iminente exclui a ilicitude.",
+      baseGuilty: 64
+    },
+    {
+      id: 4,
+      name: "Beatriz Alencar",
+      gender: "F",
+      age: 24,
+      photo: "./assets/suspects/suspect_04.svg",
+      crime: "Golpe Eletrônico com Deepfake de Voz",
+      context: "Idoso transferiu R$ 18.000 para conta bancária após ligação com voz clonada de sua neta.",
+      evidences: [
+        { icon: "🏦", text: "A conta bancária receptora dos fundos estava cadastrada no CPF de Beatriz." },
+        { icon: "📑", text: "Beatriz registrou boletim de ocorrência de perda de documentos 2 semanas antes." },
+        { icon: "🎙️", text: "Perícia concluiu que a gravação telefônica foi gerada por software de IA." },
+        { icon: "🏧", text: "O saque foi feito por um homem encapuzado em caixa eletrônico de outro estado." }
+      ],
+      legalLesson: "Fraude de Identidade: a titularidade de conta não implica autoria quando comprovada a condição de 'laranja involuntário'.",
+      baseGuilty: 38
+    },
+    {
+      id: 5,
+      name: "Thiago Ramos",
+      gender: "M",
+      age: 38,
+      photo: "./assets/suspects/suspect_05.svg",
+      crime: "Corrupção Ativa em Licitação Tecnológica",
+      context: "Suspeito de oferecer vantagens a servidor público na compra de softwares municipais.",
+      evidences: [
+        { icon: "💬", text: "Mensagens interceptadas diziam: 'O presente especial já está reservado'." },
+        { icon: "☕", text: "Encontrou-se em café privativo com o presidente da comissão licitatória." },
+        { icon: "📦", text: "Defesa provou que o 'presente' era um kit de catálogo institucional do produto." },
+        { icon: "🔍", text: "A empresa de Thiago foi desclassificada na etapa técnica do certame." }
+      ],
+      legalLesson: "Consumação da Corrupção (Art. 333 do CP): basta prometer vantagem indevida para configurar o crime, independentemente do resultado.",
+      baseGuilty: 71
+    },
+    {
+      id: 6,
+      name: "Juliana Peixoto",
+      gender: "F",
+      age: 31,
+      photo: "./assets/suspects/suspect_06.svg",
+      crime: "Sabotagem de Sistema Hospitalar",
+      context: "Pane no banco de dados apagou registros médicos 48h após a demissão da ré.",
+      evidences: [
+        { icon: "🛑", text: "Comando executado por credencial master que pertencia à Juliana." },
+        { icon: "✈️", text: "Juliana estava embarcada em voo comercial sem conexão no instante do ataque." },
+        { icon: "⏰", text: "Auditoria revelou rotina agendada (script cron) programada 3 dias antes da demissão." },
+        { icon: "👥", text: "Outros 3 administradores de TI possuíam acesso à mesma senha compartilhada." }
+      ],
+      legalLesson: "Incerteza da Autoria em Acesso Compartilhado: senhas genéricas violam a segurança e impedem a individualização da conduta penal.",
+      baseGuilty: 53
+    },
+    {
+      id: 7,
+      name: "Lucas Andrade",
+      gender: "M",
+      age: 22,
+      photo: "./assets/suspects/suspect_07.svg",
+      crime: "Dano Qualificado a Monumento Público",
+      context: "Escultura histórica foi grafitada com manifestação sobre IA e desemprego.",
+      evidences: [
+        { icon: "🎨", text: "Lucas foi abordado a duas quadras do local com mochila contendo tintas spray." },
+        { icon: "📱", text: "Foto do monumento foi postada nas redes de Lucas minutos antes da abordagem." },
+        { icon: "🧢", text: "Imagens mostram autor vestindo moletom escuro e máscara, impossibilitando identificação facial." },
+        { icon: "🎓", text: "Lucas alegou que é fotógrafo documentarista e apenas registrou o ato já feito." }
+      ],
+      legalLesson: "Presunção de Inocência (Art. 5º, LVII): estar próximo ao local do crime com objetos suspeitos não anula a necessidade de prova da execução.",
+      baseGuilty: 62
+    },
+    {
+      id: 8,
+      name: "Mariana Costa",
+      gender: "F",
+      age: 29,
+      photo: "./assets/suspects/suspect_08.svg",
+      crime: "Furto de Relíquia em Museu Acadêmico",
+      context: "Peça histórica do acervo desapareceu durante evento comemorativo na universidade.",
+      evidences: [
+        { icon: "🚪", text: "Última visitante a assinar o livro de presença antes do fechamento das portas." },
+        { icon: "👜", text: "Revista na saída não encontrou o item em sua bolsa de mão." },
+        { icon: "🪟", text: "Perícia constatou que uma janela dos fundos estava arrombada por fora." },
+        { icon: "📹", text: "Câmera do corredor sofreu queda de sinal por 8 minutos durante a visita." }
+      ],
+      legalLesson: "Dúvida Razoável: a existência de rotas alternativas de invasão e ausência de posse da res furtiva impõem a absolvição.",
+      baseGuilty: 42
+    },
+    {
+      id: 9,
+      name: "Fernando Menezes",
+      gender: "M",
+      age: 51,
+      photo: "./assets/suspects/suspect_09.svg",
+      crime: "Crime Ambiental por Despejo de Resíduos",
+      context: "Caminhão de sua empresa foi flagrado descartando solventes químicos em rio urbano.",
+      evidences: [
+        { icon: "🚚", text: "O caminhão flagrado é de propriedade da empresa de Fernando." },
+        { icon: "📝", text: "Motorista admitiu em depoimento que fez o descarte para economizar o pedágio e taxa do aterro." },
+        { icon: "🏢", text: "Fernando alega que a diretoria estabeleceu regras rígidas de descarte legal." },
+        { icon: "⚖️", text: "MP sustenta a responsabilidade penal da pessoa jurídica e do administrador gestor." }
+      ],
+      legalLesson: "Responsabilidade Penal Subjetiva: o sócio só responde criminalmente se comprovada sua ordem direta ou omissão dolosa relevante.",
+      baseGuilty: 68
+    },
+    {
+      id: 10,
+      name: "Sofia Guimarães",
+      gender: "F",
+      age: 35,
+      photo: "./assets/suspects/suspect_10.svg",
+      crime: "Violação de Direitos Autorais (Pirataria Acadêmica)",
+      context: "Criou biblioteca digital aberta distribuindo mais de 3.000 livros científicos e manuais jurídicos.",
+      evidences: [
+        { icon: "📚", text: "Acervo contava com milhares de obras protegidas disponibilizadas gratuitamente." },
+        { icon: "💸", text: "Investigação comprovou ausência total de cobrança, propagandas ou monetização." },
+        { icon: "⚖️", text: "Editoras apontam crime tipificado no Art. 184 do Código Penal." },
+        { icon: "🎓", text: "Defesa sustenta insignificância penal, fins puramente educacionais e direito ao acesso à ciência." }
+      ],
+      legalLesson: "Tipicidade e Adequação Social: o debate contemporâneo do Direito entre a proteção autoral estrita e o acesso universal à educação.",
+      baseGuilty: 55
+    }
+  ];
+
+  // SVG Fallback Procedural para garantir que todos os suspeitos tenham retratos visuais ricos
+  function generateFallbackAvatar(suspect) {
+    const isM = suspect.gender === 'M';
+    const bgColors = ['#1e293b', '#1e2230', '#1c2438', '#1b263b'];
+    const bg = bgColors[suspect.id % bgColors.length];
+    const skinColors = ['#f5d0b5', '#d4a373', '#b07d56', '#8d5524', '#e0ac69'];
+    const skin = skinColors[suspect.id % skinColors.length];
+    const hairColors = ['#1a1a1a', '#4a2c11', '#2e1c0c', '#6a4e32', '#111827'];
+    const hair = hairColors[(suspect.id * 3) % hairColors.length];
+    
+    return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+      <defs>
+        <radialGradient id="grad" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="%232b354f"/>
+          <stop offset="100%" stop-color="%23090c14"/>
+        </radialGradient>
+      </defs>
+      <rect width="400" height="500" fill="url(%23grad)"/>
+      <g stroke="%23ffffff" stroke-opacity="0.08" stroke-width="1">
+        <line x1="0" y1="100" x2="400" y2="100"/>
+        <line x1="0" y1="200" x2="400" y2="200"/>
+        <line x1="0" y1="300" x2="400" y2="300"/>
+        <line x1="0" y1="400" x2="400" y2="400"/>
+      </g>
+      <!-- Corpo -->
+      <path d="M 100 500 Q 110 370 200 370 Q 290 370 300 500 Z" fill="%232d3748"/>
+      <!-- Gola -->
+      <path d="M 160 370 Q 200 420 240 370 Z" fill="%231a202c"/>
+      <!-- Pescoço -->
+      <rect x="175" y="300" width="50" height="80" fill="${skin}"/>
+      <!-- Rosto -->
+      <ellipse cx="200" cy="240" rx="75" ry="95" fill="${skin}"/>
+      <!-- Cabelo -->
+      ${isM 
+        ? `<path d="M 120 210 Q 200 120 280 210 Q 270 140 200 135 Q 130 140 120 210 Z" fill="${hair}"/>` 
+        : `<path d="M 110 240 Q 200 110 290 240 Q 305 350 280 390 Q 270 270 200 135 Q 130 270 120 390 Q 95 350 110 240 Z" fill="${hair}"/>`
+      }
+      <!-- Olhos -->
+      <ellipse cx="170" cy="235" rx="10" ry="6" fill="%23ffffff"/>
+      <circle cx="170" cy="235" r="4" fill="%231a202c"/>
+      <ellipse cx="230" cy="235" rx="10" ry="6" fill="%23ffffff"/>
+      <circle cx="230" cy="235" r="4" fill="%231a202c"/>
+      <!-- Sobrancelhas -->
+      <path d="M 155 220 Q 170 215 185 222" stroke="${hair}" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M 215 222 Q 230 215 245 220" stroke="${hair}" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <!-- Nariz -->
+      <path d="M 200 235 L 195 265 L 205 265" stroke="%23aa7855" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Boca -->
+      <path d="M 185 285 Q 200 290 215 285" stroke="%23994444" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Placa de Identificação Policial -->
+      <rect x="70" y="440" width="260" height="48" fill="%23111827" stroke="%23ffffff" stroke-width="2" rx="4"/>
+      <text x="200" y="462" font-family="monospace" font-size="13" font-weight="bold" fill="%2300f0ff" text-anchor="middle">DPTO INVESTIGAÇÃO · FINC</text>
+      <text x="200" y="478" font-family="monospace" font-size="11" fill="%23ffffff" text-anchor="middle">SUSP-00${suspect.id} · DIREITO UNIFAN</text>
+    </svg>`;
+  }
+
+  // Estado do Jogo
+  let currentIndex = 0;
+  const userDecisions = [];
+  let isAnimating = false;
+
+  const arena = document.getElementById('arena');
+  const progressFill = document.getElementById('progressFill');
+  const caseIndicator = document.getElementById('caseIndicator');
+  const verdictModal = document.getElementById('verdictModal');
+  const modalYourVote = document.getElementById('modalYourVote');
+  const barGuilty = document.getElementById('barGuilty');
+  const barInnocent = document.getElementById('barInnocent');
+  const modalLegalLesson = document.getElementById('modalLegalLesson');
+
+  function renderCurrentCard() {
+    arena.innerHTML = '';
+    if (currentIndex >= suspects.length) {
+      showFinalScreen();
+      return;
+    }
+
+    const s = suspects[currentIndex];
+    caseIndicator.textContent = `CASO ${String(currentIndex + 1).padStart(2, '0')} DE ${suspects.length}`;
+    progressFill.style.width = `${((currentIndex + 1) / suspects.length) * 100}%`;
+
+    const card = document.createElement('div');
+    card.className = 'suspect-card';
+    card.id = 'activeCard';
+
+    const fallback = generateFallbackAvatar(s);
+
+    card.innerHTML = `
+      <div class="stamp stamp-innocent" id="stampInnocent">INOCENTE 🛡️</div>
+      <div class="stamp stamp-guilty" id="stampGuilty">CULPADO ⚖️</div>
+
+      <div class="photo-box">
+        <img class="suspect-img" src="${s.photo}" alt="${s.name}" onerror="this.onerror=null; this.src='${fallback}';">
+        <div class="photo-overlay"></div>
+        <div class="case-tag">CASO #00${s.id}</div>
+        <div class="evidence-count-badge">4 EVIDÊNCIAS</div>
+      </div>
+
+      <div class="card-content">
+        <div class="suspect-header">
+          <div class="suspect-name">
+            <span>${s.name}</span>
+            <span class="suspect-age">${s.age} anos</span>
+          </div>
+          <div class="crime-accused">ACUSAÇÃO: ${s.crime.toUpperCase()}</div>
+        </div>
+
+        <div style="font-size: .78rem; color:#94a3b8; line-height: 1.35; margin: 4px 0 8px;">
+          ${s.context}
+        </div>
+
+        <div>
+          <div class="evidences-title"><span>🔍</span> Provas Anexadas aos Autos:</div>
+          <div class="evidence-list">
+            ${s.evidences.map(ev => `
+              <div class="evidence-pill">
+                <span class="icon">${ev.icon}</span>
+                <span>${ev.text}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="legal-dilemma">
+          <strong>Dilema:</strong> O Direito exige prova além de dúvida razoável para condenar.
+        </div>
+      </div>
+    `;
+
+    arena.appendChild(card);
+    setupCardGestures(card);
+  }
+
+  // Lógica de Gestos Touch e Mouse Swipe (Estilo Tinder)
+  function setupCardGestures(card) {
+    let startX = 0, startY = 0, currentX = 0, currentY = 0;
+    let isDragging = false;
+    const stampInnocent = card.querySelector('#stampInnocent');
+    const stampGuilty = card.querySelector('#stampGuilty');
+
+    function onPointerDown(e) {
+      if (isAnimating) return;
+      isDragging = true;
+      startX = e.clientX || (e.touches && e.touches[0].clientX);
+      startY = e.clientY || (e.touches && e.touches[0].clientY);
+      card.style.transition = 'none';
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      const x = e.clientX || (e.touches && e.touches[0].clientX);
+      const y = e.clientY || (e.touches && e.touches[0].clientY);
+      currentX = x - startX;
+      currentY = y - startY;
+
+      const rotate = currentX * 0.08;
+      card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+
+      // Feedback dos carimbos proporcional à distância
+      if (currentX > 0) {
+        stampGuilty.style.opacity = Math.min(1, currentX / 80);
+        stampInnocent.style.opacity = 0;
+      } else {
+        stampInnocent.style.opacity = Math.min(1, -currentX / 80);
+        stampGuilty.style.opacity = 0;
+      }
+    }
+
+    function onPointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      const threshold = 100;
+
+      if (currentX > threshold) {
+        // Deslizou para Direita -> CULPADO
+        decide('CULPADO', 'right');
+      } else if (currentX < -threshold) {
+        // Deslizou para Esquerda -> INOCENTE
+        decide('INOCENTE', 'left');
+      } else {
+        // Volta para o centro
+        card.style.transition = 'transform .35s cubic-bezier(0.16, 1, 0.3, 1)';
+        card.style.transform = 'translate(0px, 0px) rotate(0deg)';
+        stampGuilty.style.opacity = 0;
+        stampInnocent.style.opacity = 0;
+      }
+    }
+
+    card.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+  }
+
+  // Execução da Decisão (Via Swipe ou Botões)
+  function decide(verdict, direction) {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const card = document.getElementById('activeCard');
+    const s = suspects[currentIndex];
+
+    if (verdict === 'CULPADO') {
+      sounds.guilty();
+    } else {
+      sounds.innocent();
+    }
+
+    // Anima o card saindo da tela
+    if (card) {
+      card.style.transition = 'transform .45s ease-out, opacity .4s ease';
+      const flyX = direction === 'right' ? window.innerWidth * 1.2 : -window.innerWidth * 1.2;
+      const flyRotate = direction === 'right' ? 35 : -35;
+      card.style.transform = `translate(${flyX}px, 50px) rotate(${flyRotate}deg)`;
+      card.style.opacity = '0';
+    }
+
+    // Sorteio/Geração do Percentual Aleatório da População
+    // Varia em torno de uma base para parecer realista com júri popular
+    const variance = (Math.random() * 16) - 8;
+    const finalGuiltyPercent = Math.min(92, Math.max(18, Math.round(s.baseGuilty + variance)));
+    const finalInnocentPercent = 100 - finalGuiltyPercent;
+
+    userDecisions.push({
+      suspect: s,
+      userVote: verdict,
+      popGuilty: finalGuiltyPercent,
+      popInnocent: finalInnocentPercent
+    });
+
+    setTimeout(() => {
+      showVerdictModal(verdict, finalGuiltyPercent, finalInnocentPercent, s.legalLesson);
+    }, 350);
+  }
+
+  function showVerdictModal(userVote, guiltyPct, innocentPct, lesson) {
+    if (userVote === 'CULPADO') {
+      modalYourVote.textContent = 'SEU VOTO: CONDENAR ⚖️';
+      modalYourVote.className = 'your-vote-pill vote-guilty';
+    } else {
+      modalYourVote.textContent = 'SEU VOTO: ABSOLVER 🛡️';
+      modalYourVote.className = 'your-vote-pill vote-innocent';
+    }
+
+    barGuilty.style.width = `${guiltyPct}%`;
+    barGuilty.textContent = `${guiltyPct}% CONDENARAM`;
+
+    barInnocent.style.width = `${innocentPct}%`;
+    barInnocent.textContent = `${innocentPct}% ABSOLVERAM`;
+
+    modalLegalLesson.textContent = lesson;
+    verdictModal.classList.add('active');
+    sounds.pop();
+  }
+
+  document.getElementById('btnNextCase').addEventListener('click', () => {
+    verdictModal.classList.remove('active');
+    currentIndex++;
+    isAnimating = false;
+    setTimeout(renderCurrentCard, 200);
+  });
+
+  // Botões de Ação
+  document.getElementById('btnInnocent').addEventListener('click', () => {
+    const card = document.getElementById('activeCard');
+    if (card) card.querySelector('#stampInnocent').style.opacity = '1';
+    decide('INOCENTE', 'left');
+  });
+
+  document.getElementById('btnGuilty').addEventListener('click', () => {
+    const card = document.getElementById('activeCard');
+    if (card) card.querySelector('#stampGuilty').style.opacity = '1';
+    decide('CULPADO', 'right');
+  });
+
+  document.getElementById('btnEvidence').addEventListener('click', () => {
+    const card = document.getElementById('activeCard');
+    if (!card) return;
+    card.classList.toggle('highlight-evidences');
+    sounds.pop();
+    const list = card.querySelector('.evidence-list');
+    list.style.transform = 'scale(1.03)';
+    setTimeout(() => { list.style.transform = 'none'; }, 200);
+  });
+
+  // TELA FINAL E CLASSIFICAÇÃO DE JURADO
+  function showFinalScreen() {
+    document.getElementById('gameMain').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'none';
+    const finalScreen = document.getElementById('screenFinal');
+    finalScreen.classList.add('active');
+
+    const totalGuilty = userDecisions.filter(d => d.userVote === 'CULPADO').length;
+    const badge = document.getElementById('finalProfileBadge');
+    const title = document.getElementById('finalProfileTitle');
+    const desc = document.getElementById('finalProfileDesc');
+
+    if (totalGuilty >= 7) {
+      badge.textContent = "PERFIL RIGOROSO / PUNITIVISTA";
+      badge.style.borderColor = "var(--red)";
+      badge.style.color = "var(--red)";
+      title.textContent = "O Guardião da Ordem Social";
+      desc.textContent = "Você priorizou a segurança coletiva e a repressão rápida a condutas delituosas. Na prática jurídica, jurados com esse perfil entendem que indícios fortes devem bastar para conter a criminalidade.";
+    } else if (totalGuilty <= 3) {
+      badge.textContent = "PERFIL GARANTISTA CONSTITUCIONAL";
+      badge.style.borderColor = "var(--green)";
+      badge.style.color = "var(--green)";
+      title.textContent = "O Escudo da Presunção de Inocência";
+      desc.textContent = "Você aplicou com firmeza o Art. 5º da Constituição Federal: se há qualquer dúvida ou falha na cadeia de provas, o réu deve ser absolvido. Para você, uma condenação injusta é mil vezes pior do que uma absolvição duvidosa.";
+    } else {
+      badge.textContent = "PERFIL MAGISTRADO EQUILIBRADO";
+      badge.style.borderColor = "var(--gold)";
+      badge.style.color = "var(--gold)";
+      title.textContent = "O Analista Prudente do Júri";
+      desc.textContent = "Você avaliou caso a caso com ponderação entre rigor e garantia. Soube diferenciar delitos com provas materiais incontestáveis daqueles baseados em meras suposições ou falhas tecnológicas.";
+    }
+
+    const historyList = document.getElementById('historyList');
+    historyList.innerHTML = userDecisions.map((d, i) => `
+      <div class="history-row">
+        <div>
+          <strong>#0${i+1} ${d.suspect.name}</strong>
+          <div style="color:var(--muted); font-size:.7rem;">${d.suspect.crime}</div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-weight:900; color:${d.userVote === 'CULPADO' ? 'var(--red)' : 'var(--green)'};">
+            ${d.userVote}
+          </span>
+          <div style="font-size:.65rem; color:#64748b;">Povo: ${d.popGuilty}% condenou</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('btnPlayAgain').addEventListener('click', () => {
+    currentIndex = 0;
+    userDecisions.length = 0;
+    document.getElementById('screenFinal').classList.remove('active');
+    document.getElementById('gameMain').style.display = 'flex';
+    document.getElementById('progressWrap').style.display = 'block';
+    renderCurrentCard();
+  });
+
+  // Iniciar
+  renderCurrentCard();
+})();
+</script>
+</body>
+</html>

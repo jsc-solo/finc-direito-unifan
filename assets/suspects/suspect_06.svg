@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <radialGradient id="policeBg06" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#242e44"/>
+      <stop offset="50%" stop-color="#141a29"/>
+      <stop offset="100%" stop-color="#080c14"/>
+    </radialGradient>
+    <filter id="shadow06">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Fundo Estúdio Policial / Medição de Altura -->
+  <rect width="400" height="500" fill="url(#policeBg06)"/>
+
+  <!-- Linhas de Altura (Height Chart) -->
+  <g stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.2">
+    <line x1="0" y1="70" x2="400" y2="70"/>
+    <line x1="0" y1="110" x2="400" y2="110"/>
+    <line x1="0" y1="150" x2="400" y2="150"/>
+    <line x1="0" y1="190" x2="400" y2="190"/>
+    <line x1="0" y1="230" x2="400" y2="230"/>
+    <line x1="0" y1="270" x2="400" y2="270"/>
+    <line x1="0" y1="310" x2="400" y2="310"/>
+  </g>
+  <g font-family="monospace" font-size="9" fill="#94a3b8" opacity="0.65">
+    <text x="12" y="74">2.00m - 6'6"</text>
+    <text x="12" y="114">1.90m - 6'2"</text>
+    <text x="12" y="154">1.80m - 5'11"</text>
+    <text x="12" y="194">1.70m - 5'7"</text>
+    <text x="12" y="234">1.60m - 5'3"</text>
+    <text x="12" y="274">1.50m - 4'11"</text>
+  </g>
+
+  <!-- Cabelo por trás (se feminino longo) -->
+  
+        <!-- Hair with Bun -->
+        <circle cx="200" cy="115" r="42" fill="#261c14"/>
+        <path d="M 125 220 Q 200 125 275 220 Q 270 140 200 130 Q 130 140 125 220 Z" fill="#261c14"/>
+        
+
+  <!-- Ombros e Tronco -->
+  <path d="M 85 500 C 95 385 130 365 200 365 C 270 365 305 385 315 500 Z" fill="#334155" filter="url(#shadow06)"/>
+  
+  <!-- Detalhe da Roupa -->
+  <path d="M 160 365 Q 200 425 240 365 Z" fill="#0f172a" opacity="0.5"/>
+
+  <!-- Pescoço -->
+  <rect x="175" y="295" width="50" height="85" fill="#e8b894"/>
+  <!-- Sombra do queixo -->
+  <ellipse cx="200" cy="315" rx="36" ry="14" fill="#000000" opacity="0.2"/>
+
+  <!-- Rosto Base -->
+  <ellipse cx="200" cy="242" rx="74" ry="92" fill="#e8b894" filter="url(#shadow06)"/>
+
+  <!-- Orelhas -->
+  <ellipse cx="126" cy="246" rx="9" ry="18" fill="#e8b894"/>
+  <ellipse cx="274" cy="246" rx="9" ry="18" fill="#e8b894"/>
+
+  <!-- Olhos -->
+  <g>
+    <ellipse cx="168" cy="236" rx="12" ry="7" fill="#ffffff"/>
+    <circle cx="168" cy="236" r="4.5" fill="#18181b"/>
+    <circle cx="170" cy="234" r="1.5" fill="#ffffff"/>
+
+    <ellipse cx="232" cy="236" rx="12" ry="7" fill="#ffffff"/>
+    <circle cx="232" cy="236" r="4.5" fill="#18181b"/>
+    <circle cx="234" cy="234" r="1.5" fill="#ffffff"/>
+  </g>
+
+  <!-- Sobrancelhas -->
+  <path d="M 152 222 Q 168 214 184 223" stroke="#261c14" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M 216 223 Q 232 214 248 222" stroke="#261c14" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Nariz -->
+  <path d="M 200 234 L 195 266 L 206 266" stroke="#9a623f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Boca -->
+  <path d="M 184 288 Q 200 293 216 288" stroke="#883333" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Cabelo por cima (se masculino ou topo) -->
+  
+
+  <!-- Óculos ou Acessórios -->
+  
+        <!-- Modern Glasses -->
+        <rect x="145" y="222" width="46" height="30" rx="6" fill="none" stroke="#00f0ff" stroke-width="3" opacity="0.9"/>
+        <rect x="209" y="222" width="46" height="30" rx="6" fill="none" stroke="#00f0ff" stroke-width="3" opacity="0.9"/>
+        <line x1="191" y1="234" x2="209" y2="234" stroke="#00f0ff" stroke-width="3" opacity="0.9"/>
+        <line x1="125" y1="230" x2="145" y2="232" stroke="#00f0ff" stroke-width="2.5" opacity="0.7"/>
+        <line x1="255" y1="232" x2="275" y2="230" stroke="#00f0ff" stroke-width="2.5" opacity="0.7"/>
+        
+
+  <!-- Placa de Identificação Policial do Stand de Direito UNIFAN / FINC -->
+  <g transform="translate(45, 432)" filter="url(#shadow06)">
+    <rect width="310" height="56" rx="6" fill="#0d111b" stroke="#334155" stroke-width="2"/>
+    <rect x="5" y="5" width="300" height="46" rx="4" fill="#161e31"/>
+    <text x="155" y="24" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold" fill="#00f0ff" text-anchor="middle" letter-spacing="1">POLÍCIA CIVIL · INQUÉRITO FINC</text>
+    <text x="155" y="41" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#f8fafc" text-anchor="middle">RÉU #06 · JULIANA PEIXOTO</text>
+  </g>
+</svg>
